@@ -1,4 +1,0 @@
-playwright
-flask
-flask_cors
-pywinauto

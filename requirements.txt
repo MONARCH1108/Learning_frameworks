@@ -1,0 +1,10 @@
+playwright
+flask
+flask_cors
+pywinauto
+ollama
+chromadb
+langchain
+langchain_community
+langchain_ollama
+langchain_core
