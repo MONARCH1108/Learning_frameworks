@@ -17,7 +17,22 @@ def add(a: int, b: int):
     """add the two values a + b"""
     return a + b
 
-tools = [add]
+@tool
+def multiply(a: int, b: int):
+    """ multiple the two numbers"""
+    return a * b
+
+@tool
+def subtract(a: int, b: int):
+    """ subtract the two numbers"""
+    return a - b
+
+@tool
+def divide(a: int, b: int):
+    """ subtract the two numbers"""
+    return a / b
+
+tools = [add, subtract, multiply, divide]
 
 model = ChatGoogleGenerativeAI(
     model="gemini-2.5-pro",   
@@ -26,7 +41,7 @@ model = ChatGoogleGenerativeAI(
 
 def model_call(state: AgentState) -> AgentState:
     system_prompt = SystemMessage(
-        content="your name is Niharika and you are my best friend"
+        content="your name is jarvis and you are my best friend"
     )
     response = model.invoke([system_prompt] + state["messages"])
     return {"messages": [response]}
@@ -65,5 +80,5 @@ def print_stream(stream):
         else:
             message.pretty_print()
 
-inputs = {"messages": [HumanMessage(content="add 344+4345. add 3+4 love youu")]}
+inputs = {"messages": [HumanMessage(content="add 344+4345. add 3+4 , 344+4345/12345,  ")]}
 print_stream(app.stream(inputs, stream_mode="values"))
