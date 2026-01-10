@@ -1,0 +1,12 @@
+.welcome-message{
+  font-size: 100px;
+  color: green;
+  padding: 10px;
+  border: 10px solid;
+}
+.loginPrompt{
+  font-size: 100px;
+  color: red;
+  padding: 10px;
+  border: 10px solid;
+}
