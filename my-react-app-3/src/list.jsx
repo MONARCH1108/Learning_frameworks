@@ -8,8 +8,10 @@ function List(props){
     const lowCalFruits = itemList.filter(items => items.cal < 50)
     const HighCalFruits = itemList.filter(items => items.cal > 50)
 
-    const listItems = HighCalFruits.map(HighCalFruits => <li key={HighCalFruits.id}>{HighCalFruits.name}: <b>{HighCalFruits.cal}</b></li>)
-    const listItems_1 = lowCalFruits.map(lowCalFruits => <li key={lowCalFruits.id}>{lowCalFruits.name}: <b>{lowCalFruits.cal}</b></li>)
+    const listItems = HighCalFruits.map(HighCalFruits => 
+                <li key={HighCalFruits.id}>{HighCalFruits.name}: <b>{HighCalFruits.cal}</b></li>)
+    const listItems_1 = lowCalFruits.map(lowCalFruits => 
+                <li key={lowCalFruits.id}>{lowCalFruits.name}: <b>{lowCalFruits.cal}</b></li>)
     return(
         <div>
         <h3>High cal</h3>
