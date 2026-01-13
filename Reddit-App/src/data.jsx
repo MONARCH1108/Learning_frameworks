@@ -25,6 +25,7 @@ function RedditData() {
 
     return (
         <div>
+            <h2>Method-1</h2>
             <button onClick={()=>GetRedditData()}>Fetch Data</button>
             <p>{All_data}</p>
         </div>
