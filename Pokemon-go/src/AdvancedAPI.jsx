@@ -48,15 +48,12 @@ function GetDataApi() {
 
             <div className="Poke-card">
                 <div className="Poke-top">
-
                     <div className="Pokemon-basic">
-                        <h2>Basic info</h2>
                         <img src={sprite} alt="Pokemon Img" id="pokemonSprite" />
                         <h2>{name}</h2>
                         <p>{list_abilities.join(", ")}</p>
                     </div>
 
-                    {/* ✅ MOVES BOX */}
                     <div className="Pokemon-moves">
                         <ul>
                             {list_moves.map((move, index) => (
@@ -64,7 +61,6 @@ function GetDataApi() {
                             ))}
                         </ul>
                     </div>
-
                 </div>
 
                 <div className="Pokemon-sprites">

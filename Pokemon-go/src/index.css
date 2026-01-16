@@ -1,6 +1,7 @@
 body{
     background-color: black;
     color: aliceblue;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 .Header-field{
     border: 2px solid black;
@@ -8,7 +9,7 @@ body{
     text-align: center;
     padding: 20px;
     background-color: blueviolet;
-    box-shadow: 2px 2px 2px black;
+    box-shadow: 4px 4px 4px black;
 }
 .Header-field h2{
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
@@ -26,7 +27,7 @@ body{
     border: 2px solid black;
     border-radius: 5px;
     margin-left: 10px;
-    box-shadow: 2px 2px 2px black;
+    box-shadow: 4px 4px 4px black;
     background-color: rgb(222, 29, 222);
 }
 .Header-field button:hover{
@@ -37,7 +38,7 @@ body{
     border: 2px solid black;
     border-radius: 20px;
     text-align: center;
-    padding: 20px;
+    padding: 10px;
     margin-top: 10px;
     background-color: blueviolet;
 }
