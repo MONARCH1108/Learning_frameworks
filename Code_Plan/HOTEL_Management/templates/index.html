@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Ordering System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .menu-section, .order-section {
+            padding: 20px;
+        }
+        
+        .menu-section {
+            border-right: 2px solid #eee;
+        }
+        
+        h2 {
+            color: #333;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .menu-item {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .menu-item:hover {
+            background-color: #e8f5e8;
+            border-color: #4CAF50;
+            transform: translateY(-2px);
+        }
+        
+        .menu-item h3 {
+            margin: 0 0 5px 0;
+            color: #333;
+            font-size: 16px;
+        }
+        
+        .menu-item .price {
+            color: #4CAF50;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .order-input {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        input[type="text"], input[type="email"], input[type="tel"] {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        input[type="text"]:focus, input[type="email"]:focus, input[type="tel"]:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+        
+        button {
+            padding: 12px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #45a049;
+        }
+        
+        .clear-btn {
+            background-color: #f44336;
+        }
+        
+        .clear-btn:hover {
+            background-color: #da190b;
+        }
+        
+        .finalize-btn {
+            background-color: #FF9800;
+        }
+        
+        .finalize-btn:hover {
+            background-color: #e68900;
+        }
+        
+        .order-list {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            margin-bottom: 20px;
+            min-height: 200px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .order-item:last-child {
+            border-bottom: none;
+        }
+        
+        .remove-btn {
+            background-color: #ff4444;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .remove-btn:hover {
+            background-color: #cc0000;
+        }
+        
+        .total-bill {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+        .message {
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .customer-info {
+            background-color: #f0f8ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+        }
+        
+        .customer-info h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        
+        .customer-info input {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close:hover {
+            color: black;
+        }
+        
+        .receipt {
+            font-family: 'Courier New', monospace;
+            background-color: white;
+            padding: 20px;
+            border: 2px dashed #333;
+            margin: 20px 0;
+        }
+        
+        .receipt-header {
+            text-align: center;
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .receipt-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        
+        .receipt-total {
+            border-top: 2px solid #333;
+            padding-top: 10px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .button-group button {
+            flex: 1;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .menu-section {
+                border-right: none;
+                border-bottom: 2px solid #eee;
+            }
+            
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+        }
+        
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .receipt, .receipt * {
+                visibility: visible;
+            }
+            .receipt {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>🍽️ Restaurant Ordering System</h1>
+    
+    <div class="container">
+        <div class="menu-section">
+            <h2>Menu</h2>
+            <div class="menu-grid">
+                <div class="menu-item" onclick="addToOrder('Burger')">
+                    <h3>Burger</h3>
+                    <div class="price">$8.99</div>
+                </div>
+                <div class="menu-item" onclick="addToOrder('Pizza')">
+                    <h3>Pizza</h3>
+                    <div class="price">$12.49</div>
+                </div>
+                <div class="menu-item" onclick="addToOrder('Chicken Wings')">
+                    <h3>Chicken Wings</h3>
+                    <div class="price">$10.99</div>
+                </div>
+                <div class="menu-item" onclick="addToOrder('Fish Fry')">
+                    <h3>Fish Fry</h3>
+                    <div class="price">$14.99</div>
+                </div>
+                <div class="menu-item" onclick="addToOrder('Steak Dinner')">
+                    <h3>Steak Dinner</h3>
+                    <div class="price">$24.99</div>
+                </div>
+                <div class="menu-item" onclick="addToOrder('Salad')">
+                    <h3>Salad</h3>
+                    <div class="price">$6.49</div>
+                </div>
+                <div class="menu-item" onclick="addToOrder('Sandwich')">
+                    <h3>Sandwich</h3>
+                    <div class="price">$7.49</div>
+                </div>
+                <div class="menu-item" onclick="addToOrder('Soup')">
+                    <h3>Soup</h3>
+                    <div class="price">$4.99</div>
+                </div>
+                <div class="menu-item" onclick="addToOrder('Fries')">
+                    <h3>Fries</h3>
+                    <div class="price">$2.99</div>
+                </div>
+                <div class="menu-item" onclick="addToOrder('Breadsticks')">
+                    <h3>Breadsticks</h3>
+                    <div class="price">$3.99</div>
+                </div>
+                <div class="menu-item" onclick="addToOrder('Milkshake')">
+                    <h3>Milkshake</h3>
+                    <div class="price">$5.49</div>
+                </div>
+                <div class="menu-item" onclick="addToOrder('Ice Cream')">
+                    <h3>Ice Cream</h3>
+                    <div class="price">$4.99</div>
+                </div>
+                <div class="menu-item" onclick="addToOrder('Waffles')">
+                    <h3>Waffles</h3>
+                    <div class="price">$8.49</div>
+                </div>
+                <div class="menu-item" onclick="addToOrder('Eggs Benedict')">
+                    <h3>Eggs Benedict</h3>
+                    <div class="price">$9.99</div>
+                </div>
+                <div class="menu-item" onclick="addToOrder('Breakfast Burrito')">
+                    <h3>Breakfast Burrito</h3>
+                    <div class="price">$6.99</div>
+                </div>
+                <div class="menu-item" onclick="addToOrder('Chicken Quesadilla')">
+                    <h3>Chicken Quesadilla</h3>
+                    <div class="price">$7.99</div>
+                </div>
+                <div class="menu-item" onclick="addToOrder('Grilled Cheese')">
+                    <h3>Grilled Cheese</h3>
+                    <div class="price">$5.49</div>
+                </div>
+                <div class="menu-item" onclick="addToOrder('Falafel Wrap')">
+                    <h3>Falafel Wrap</h3>
+                    <div class="price">$6.99</div>
+                </div>
+                <div class="menu-item" onclick="addToOrder('Tacos')">
+                    <h3>Tacos</h3>
+                    <div class="price">$8.49</div>
+                </div>
+            </div>
+            
+            <div class="order-input">
+                <input type="text" id="orderInput" placeholder="Type dish name here..." onkeypress="handleKeyPress(event)">
+                <button onclick="addOrderFromInput()">Add Order</button>
+            </div>
+        </div>
+        
+        <div class="order-section">
+            <h2>Your Order</h2>
+            
+            <div id="message"></div>
+            
+            <div class="order-list" id="orderList">
+                <p style="text-align: center; color: #666;">No items ordered yet</p>
+            </div>
+            
+            <div class="total-bill" id="totalBill">
+                Total: $0.00
+            </div>
+            
+            <div class="button-group">
+                <button class="clear-btn" onclick="clearOrder()">Clear Order</button>
+                <button class="finalize-btn" onclick="showBillingForm()" id="finalizeBtn" disabled>Finalize Order</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Billing Modal -->
+    <div id="billingModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeBillingModal()">&times;</span>
+            <h2>Customer Information & Final Bill</h2>
+            
+            <div class="customer-info">
+                <h3>Customer Details</h3>
+                <input type="text" id="customerName" placeholder="Full Name *" required>
+                <input type="email" id="customerEmail" placeholder="Email Address">
+                <input type="tel" id="customerPhone" placeholder="Phone Number">
+                <input type="text" id="customerTable" placeholder="Table Number">
+            </div>
+
+            <div id="finalBillPreview"></div>
+            
+            <div class="button-group">
+                <button onclick="closeBillingModal()">Cancel</button>
+                <button onclick="processFinalBill()" class="finalize-btn">Complete Order</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Receipt Modal -->
+    <div id="receiptModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeReceiptModal()">&times;</span>
+            <div id="receiptContent"></div>
+            <div class="button-group">
+                <button onclick="printReceipt()">Print Receipt</button>
+                <button onclick="newOrder()">New Order</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mock data and state management for standalone version
+        let currentOrderList = [];
+        let currentBill = 0;
+        let orderHistory = [];
+        let nextOrderId = 1;
+        
+        // Menu items with prices
+        const menuItems = {
+            'burger': { name: 'Burger', price: 8.99 },
+            'pizza': { name: 'Pizza', price: 12.49 },
+            'chicken wings': { name: 'Chicken Wings', price: 10.99 },
+            'fish fry': { name: 'Fish Fry', price: 14.99 },
+            'steak dinner': { name: 'Steak Dinner', price: 24.99 },
+            'salad': { name: 'Salad', price: 6.49 },
+            'sandwich': { name: 'Sandwich', price: 7.49 },
+            'soup': { name: 'Soup', price: 4.99 },
+            'fries': { name: 'Fries', price: 2.99 },
+            'breadsticks': { name: 'Breadsticks', price: 3.99 },
+            'milkshake': { name: 'Milkshake', price: 5.49 },
+            'ice cream': { name: 'Ice Cream', price: 4.99 },
+            'waffles': { name: 'Waffles', price: 8.49 },
+            'eggs benedict': { name: 'Eggs Benedict', price: 9.99 },
+            'breakfast burrito': { name: 'Breakfast Burrito', price: 6.99 },
+            'chicken quesadilla': { name: 'Chicken Quesadilla', price: 7.99 },
+            'grilled cheese': { name: 'Grilled Cheese', price: 5.49 },
+            'falafel wrap': { name: 'Falafel Wrap', price: 6.99 },
+            'tacos': { name: 'Tacos', price: 8.49 }
+        };
+
+        function showMessage(message, isSuccess) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.innerHTML = `<div class="${isSuccess ? 'success' : 'error'} message">${message}</div>`;
+            setTimeout(() => {
+                messageDiv.innerHTML = '';
+            }, 3000);
+        }
+
+        function updateOrderDisplay(orderList, totalBill) {
+            currentOrderList = orderList;
+            currentBill = totalBill;
+            
+            const orderListDiv = document.getElementById('orderList');
+            const totalBillDiv = document.getElementById('totalBill');
+            const finalizeBtn = document.getElementById('finalizeBtn');
+            
+            if (orderList.length === 0) {
+                orderListDiv.innerHTML = '<p style="text-align: center; color: #666;">No items ordered yet</p>';
+                finalizeBtn.disabled = true;
+            } else {
+                orderListDiv.innerHTML = orderList.map((item, index) => 
+                    `<div class="order-item">
+                        <span>${item.name}</span>
+                        <div>
+                            <span>$${item.price.toFixed(2)}</span>
+                            <button class="remove-btn" onclick="removeItem(${index})">Remove</button>
+                        </div>
+                    </div>`
+                ).join('');
+                finalizeBtn.disabled = false;
+            }
+            
+            totalBillDiv.textContent = `Subtotal: $${totalBill.toFixed(2)}`;
+        }
+
+        function addToOrder(dishName) {
+            const dish = menuItems[dishName.toLowerCase()];
+            
+            if (dish) {
+                const orderItem = {
+                    name: dish.name,
+                    price: dish.price,
+                    timestamp: new Date().toISOString()
+                };
+                
+                currentOrderList.push(orderItem);
+                currentBill += dish.price;
+                
+                updateOrderDisplay(currentOrderList, currentBill);
+                showMessage(`${dish.name} added to order!`, true);
+            } else {
+                showMessage(`"${dishName}" not found on menu`, false);
+            }
+        }
+
+        function removeItem(index) {
+            if (index >= 0 && index < currentOrderList.length) {
+                const removedItem = currentOrderList.splice(index, 1)[0];
+                currentBill -= removedItem.price;
+                
+                updateOrderDisplay(currentOrderList, currentBill);
+                showMessage(`${removedItem.name} removed from order`, true);
+            } else {
+                showMessage('Item not found', false);
+            }
+        }
+
+        function addOrderFromInput() {
+            const orderInput = document.getElementById('orderInput');
+            const dishName = orderInput.value.trim();
+            
+            if (dishName) {
+                addToOrder(dishName);
+                orderInput.value = '';
+            }
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                addOrderFromInput();
+            }
+        }
+
+        function clearOrder() {
+            const itemsCount = currentOrderList.length;
+            currentOrderList = [];
+            currentBill = 0;
+            
+            updateOrderDisplay(currentOrderList, currentBill);
+            showMessage('Order cleared!', true);
+        }
+
+        function showBillingForm() {
+            if (currentOrderList.length === 0) {
+                showMessage('No items in order', false);
+                return;
+            }
+
+            // Calculate billing details
+            const subtotal = currentBill;
+            const tax = subtotal * 0.08; // 8% tax
+            const serviceFee = subtotal * 0.03; // 3% service fee
+            const total = subtotal + tax + serviceFee;
+
+            // Show bill preview
+            const billPreview = document.getElementById('finalBillPreview');
+            billPreview.innerHTML = `
+                <div class="receipt">
+                    <div class="receipt-header">
+                        <h3>Order Summary</h3>
+                    </div>
+                    ${currentOrderList.map(item => 
+                        `<div class="receipt-item">
+                            <span>${item.name}</span>
+                            <span>$${item.price.toFixed(2)}</span>
+                        </div>`
+                    ).join('')}
+                    <div class="receipt-item">
+                        <span>Subtotal:</span>
+                        <span>$${subtotal.toFixed(2)}</span>
+                    </div>
+                    <div class="receipt-item">
+                        <span>Tax (8%):</span>
+                        <span>$${tax.toFixed(2)}</span>
+                    </div>
+                    <div class="receipt-item">
+                        <span>Service Fee (3%):</span>
+                        <span>$${serviceFee.toFixed(2)}</span>
+                    </div>
+                    <div class="receipt-total">
+                        <div class="receipt-item">
+                            <span>TOTAL:</span>
+                            <span>$${total.toFixed(2)}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('billingModal').style.display = 'block';
+        }
+
+        function closeBillingModal() {
+            document.getElementById('billingModal').style.display = 'none';
+        }
+
+        function processFinalBill() {
+            const customerName = document.getElementById('customerName').value.trim();
+            const customerEmail = document.getElementById('customerEmail').value.trim();
+            const customerPhone = document.getElementById('customerPhone').value.trim();
+            const customerTable = document.getElementById('customerTable').value.trim();
+
+            if (!customerName) {
+                showMessage('Customer name is required', false);
+                return;
+            }
+
+            // Calculate final bill
+            const subtotal = currentBill;
+            const tax = subtotal * 0.08;
+            const serviceFee = subtotal * 0.03;
+            const total = subtotal + tax + serviceFee;
+
+            const billData = {
+                order_id: `ORD-${new Date().toISOString().slice(0, 10).replace(/-/g, '')}-${String(nextOrderId++).padStart(4, '0')}`,
+                timestamp: new Date().toISOString(),
+                customer_info: {
+                    name: customerName,
+                    email: customerEmail,
+                    phone: customerPhone,
+                    table: customerTable
+                },
+                items: [...currentOrderList],
+                subtotal: subtotal,
+                tax: tax,
+                service_fee: serviceFee,
+                total: total,
+                payment_status: 'completed'
+            };
+
+            // Store order in history
+            orderHistory.push(billData);
+
+            // Show receipt
+            closeBillingModal();
+            showReceipt(billData);
+            
+            // Clear current order
+            currentOrderList = [];
+            currentBill = 0;
+            updateOrderDisplay(currentOrderList, currentBill);
+        }
+
+        function showReceipt(billData) {
+            const receiptContent = document.getElementById('receiptContent');
+            const orderDate = new Date(billData.timestamp).toLocaleString();
+            
+            receiptContent.innerHTML = `
+                <div class="receipt">
+                    <div class="receipt-header">
+                        <h2>🍽️ Restaurant Receipt</h2>
+                        <p>Order ID: ${billData.order_id}</p>
+                        <p>Date: ${orderDate}</p>
+                        <p>Customer: ${billData.customer_info.name}</p>
+                        ${billData.customer_info.table ? `<p>Table: ${billData.customer_info.table}</p>` : ''}
+                    </div>
+                    
+                    <h3>Items Ordered:</h3>
+                    ${billData.items.map(item => 
+                        `<div class="receipt-item">
+                            <span>${item.name}</span>
+                            <span>$${item.price.toFixed(2)}</span>
+                        </div>`
+                    ).join('')}
+                    
+                    <div style="margin-top: 15px;">
+                        <div class="receipt-item">
+                            <span>Subtotal:</span>
+                            <span>$${billData.subtotal.toFixed(2)}</span>
+                        </div>
+                        <div class="receipt-item">
+                            <span>Tax (8%):</span>
+                            <span>$${billData.tax.toFixed(2)}</span>
+                        </div>
+                        <div class="receipt-item">
+                            <span>Service Fee (3%):</span>
+                            <span>$${billData.service_fee.toFixed(2)}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="receipt-total">
+                        <div class="receipt-item" style="font-size: 18px;">
+                            <span>TOTAL PAID:</span>
+                            <span>$${billData.total.toFixed(2)}</span>
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 20px; font-size: 14px;">
+                        <p>Thank you for dining with us!</p>
+                        <p>Payment Status: ${billData.payment_status.toUpperCase()}</p>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('receiptModal').style.display = 'block';
+        }
+
+        function closeReceiptModal() {
+            document.getElementById('receiptModal').style.display = 'none';
+        }
+
+        function printReceipt() {
+            window.print();
+        }
+
+        function newOrder() {
+            closeReceiptModal();
+            // Clear customer info
+            document.getElementById('customerName').value = '';
+            document.getElementById('customerEmail').value = '';
+            document.getElementById('customerPhone').value = '';
+            document.getElementById('customerTable').value = '';
+        }
+
+        // Load existing order on page load
+        window.onload = function() {
+            updateOrderDisplay(currentOrderList, currentBill);
+        };
+
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            const billingModal = document.getElementById('billingModal');
+            const receiptModal = document.getElementById('receiptModal');
+            
+            if (event.target == billingModal) {
+                closeBillingModal();
+            }
+            if (event.target == receiptModal) {
+                closeReceiptModal();
+            }
+        };
+
+        // Add keyboard shortcuts
+        document.addEventListener('keydown', function(event) {
+            // Press 'C' to clear order
+            if (event.key.toLowerCase() === 'c' && event.ctrlKey) {
+                event.preventDefault();
+                clearOrder();
+            }
+            
+            // Press 'F' to finalize order
+            if (event.key.toLowerCase() === 'f' && event.ctrlKey) {
+                event.preventDefault();
+                if (currentOrderList.length > 0) {
+                    showBillingForm();
+                }
+            }
+            
+            // Press Escape to close modals
+            if (event.key === 'Escape') {
+                closeBillingModal();
+                closeReceiptModal();
+            }
+        });
+
+        // Add order analytics (for demo purposes)
+        function getOrderStats() {
+            const totalOrders = orderHistory.length;
+            const totalRevenue = orderHistory.reduce((sum, order) => sum + order.total, 0);
+            const averageOrderValue = totalOrders > 0 ? totalRevenue / totalOrders : 0;
+            
+            const popularItems = {};
+            orderHistory.forEach(order => {
+                order.items.forEach(item => {
+                    popularItems[item.name] = (popularItems[item.name] || 0) + 1;
+                });
+            });
+            
+            return {
+                totalOrders,
+                totalRevenue,
+                averageOrderValue,
+                popularItems
+            };
+        }
+
+        // Console command for viewing stats (for demo)
+        window.showStats = function() {
+            console.log('Order Statistics:', getOrderStats());
+        };
+    </script>
+</body>
+</html>

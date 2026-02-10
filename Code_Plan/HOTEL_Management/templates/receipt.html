@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receipt - {{ order_id }}</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .receipt {
+            background-color: white;
+            border: 2px dashed #333;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .receipt-header {
+            border-bottom: 2px solid #333;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .receipt-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            text-align: left;
+        }
+        
+        .receipt-total {
+            border-top: 2px solid #333;
+            padding-top: 15px;
+            margin-top: 15px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .back-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        
+        .back-btn:hover {
+            background-color: #45a049;
+        }
+        
+        @media print {
+            body {
+                background-color: white;
+            }
+            .back-btn {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="receipt">
+        <div class="receipt-header">
+            <h1>🍽️ Restaurant Receipt</h1>
+            <p>Order ID: {{ order_id }}</p>
+            <p>Thank you for dining with us!</p>
+        </div>
+        
+        <p>Receipt details will be loaded dynamically</p>
+    </div>
+    
+    <div style="text-align: center;">
+        <button class="back-btn" onclick="window.location.href='/'">New Order</button>
+        <button class="back-btn" onclick="window.print()">Print Receipt</button>
+    </div>
+</body>
+</html>

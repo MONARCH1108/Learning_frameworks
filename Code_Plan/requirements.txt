@@ -1,0 +1,17 @@
+langchain
+wikipedia
+feedparser
+spacy
+bs4
+ollama
+flask
+chromadb
+psutil
+flask_socketio
+google.generativeai
+PyMuPDF
+selenium
+langchain-ollama
+langchain_community
+langchain_huggingface
+sentence_transformers
