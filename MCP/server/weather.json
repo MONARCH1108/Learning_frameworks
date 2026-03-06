@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "weather": {
+      "command": "C:/Users/abhay/OneDrive/Desktop/ModelCP/.venv/Scripts/python.exe",
+      "args": [
+        "C:/Users/abhay/OneDrive/Desktop/ModelCP/server/weather1.py"
+      ]
+    }
+  }
+}
